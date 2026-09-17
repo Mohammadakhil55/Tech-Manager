@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History — TechManager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="nav">
+    <a class="brand" href="/"><span class="brand-mark">TM</span><span><b>TechManager</b><small>PROJECT INTELLIGENCE</small></span></a>
+    <div class="nav-links"><a href="/">Dashboard</a><a class="active" href="/history">History</a><a href="/about">About</a></div>
+</nav>
+
+<main class="history">
+    <div class="page-head">
+        <div><span class="eyebrow">PROJECT RECORDS</span><h1>Recommendation history</h1><p>Review, compare and manage previous technology decisions.</p></div>
+        <a class="btn btn-dark" href="/">+ New analysis</a>
+    </div>
+
+    <section class="metric-grid four">
+        <div><small>ANALYSES</small><strong>{{ total }}</strong><span>Saved records</span></div>
+        <div><small>PROJECT TYPES</small><strong>{{ distinct_projects }}</strong><span>Categories used</span></div>
+        <div><small>AVG. SCALABILITY</small><strong>{{ avg_scale }}%</strong><span>Across all records</span></div>
+        <div><small>ADVANCED</small><strong>{{ advanced }}</strong><span>High-complexity projects</span></div>
+    </section>
+
+    <form class="filters" method="GET">
+        <input name="q" value="{{ q }}" placeholder="Search project name...">
+        <select name="type">
+            <option value="">All project types</option>
+            {% for t in ["Portfolio","Education","Hospital","Banking","E-Commerce","E-Sports"] %}
+            <option value="{{ t }}" {% if selected_type == t %}selected{% endif %}>{{ t }}</option>
+            {% endfor %}
+        </select>
+        <select name="budget">
+            <option value="">All budgets</option>
+            {% for b in ["Low","Medium","High"] %}
+            <option value="{{ b }}" {% if selected_budget == b %}selected{% endif %}>{{ b }}</option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-dark" type="submit">Filter</button>
+        <a class="btn btn-light" href="/history">Reset</a>
+    </form>
+
+    {% if records %}
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>PROJECT</th><th>TYPE</th><th>STACK</th><th>TEAM</th><th>COMPLEXITY</th><th>SCALE</th><th>DATE</th><th></th></tr></thead>
+            <tbody>
+            {% for r in records %}
+            <tr>
+                <td><strong>{{ r['project_name'] }}</strong></td>
+                <td>{{ r['project_type'] }}</td>
+                <td><span class="muted-stack">{{ r['frontend'] }}</span></td>
+                <td>{{ r['team_size'] }}</td>
+                <td><span class="pill">{{ r['complexity'] }}</span></td>
+                <td><b>{{ r['scalability'] }}%</b></td>
+                <td>{{ r['created_at'] }}</td>
+                <td class="actions"><a href="/details/{{ r['id'] }}">View</a><form method="POST" action="/delete/{{ r['id'] }}" onsubmit="return confirm('Delete this record?')"><button>Delete</button></form></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty"><h2>No matching analyses</h2><p>Generate a recommendation and it will appear here.</p><a class="btn btn-dark" href="/">Start analysis</a></div>
+    {% endif %}
+</main>
+
+<footer class="footer"><b>TechManager</b><span>Flask · Python · SQLite</span><span>Academic PBL Project</span></footer>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — TechManager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="nav">
+    <a class="brand" href="/"><span class="brand-mark">TM</span><span><b>TechManager</b><small>PROJECT INTELLIGENCE</small></span></a>
+    <div class="nav-links"><a href="/">Dashboard</a><a href="/history">History</a><a class="active" href="/about">About</a></div>
+</nav>
+
+<main class="about">
+    <span class="eyebrow">PBL PROJECT</span>
+    <h1>A decision-support system for technology selection.</h1>
+    <p class="lead">TechManager converts a small set of project requirements into a structured technology and delivery plan. The current engine is intentionally explainable and rule-based.</p>
+
+    <div class="about-grid">
+        <article><b>01</b><h2>Problem</h2><p>Choosing a suitable stack is difficult when project scope, team size, budget and security needs vary.</p></article>
+        <article><b>02</b><h2>Solution</h2><p>The engine maps requirements to a stack, architecture, scalability estimate, security checklist, team roles and roadmap.</p></article>
+        <article><b>03</b><h2>Technology</h2><p>Python, Flask, Jinja templates, responsive CSS, JavaScript and SQLite.</p></article>
+        <article><b>04</b><h2>Future scope</h2><p>Authentication, PostgreSQL, cloud deployment, ML scoring and generative AI explanations can be added later.</p></article>
+    </div>
+
+    <div class="stack-line"><span>PYTHON</span><span>FLASK</span><span>SQLITE</span><span>JAVASCRIPT</span><span>HTML / CSS</span></div>
+</main>
+
+<footer class="footer"><b>TechManager</b><span>Academic PBL Project</span><span><a href="/health">System health</a></span></footer>
+</body>
+</html>

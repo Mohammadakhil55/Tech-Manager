@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechManager — Project Intelligence</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="nav">
+    <a class="brand" href="/">
+        <span class="brand-mark">TM</span>
+        <span><b>TechManager</b><small>PROJECT INTELLIGENCE</small></span>
+    </a>
+    <div class="nav-links">
+        <a class="active" href="/">Dashboard</a>
+        <a href="/history">History</a>
+        <a href="/about">About</a>
+    </div>
+</nav>
+
+<main>
+    <section class="hero">
+        <div class="hero-copy">
+            <span class="eyebrow">PROJECT TECHNOLOGY ADVISOR</span>
+            <h1>Turn project requirements into a <em>technology plan.</em></h1>
+            <p>Analyze project type, team size and budget to generate a practical stack, architecture, security plan and delivery roadmap.</p>
+            <div class="hero-actions">
+                <a class="btn btn-dark" href="#analyze">Start analysis <span>→</span></a>
+                <a class="btn btn-light" href="/history">View history</a>
+            </div>
+        </div>
+
+        <div class="hero-panel">
+            <div class="panel-top"><span>RECOMMENDATION ENGINE</span><i></i></div>
+            <div class="flow">
+                <div class="flow-card"><small>FRONTEND</small><b>React.js</b></div>
+                <span>→</span>
+                <div class="flow-card"><small>BACKEND</small><b>Flask</b></div>
+                <span>→</span>
+                <div class="flow-card"><small>DATA</small><b>PostgreSQL</b></div>
+            </div>
+            <div class="panel-bottom">
+                <span><small>ENGINE</small><b>Rule-based</b></span>
+                <span><small>FACTORS</small><b>10+</b></span>
+                <span><small>OUTPUTS</small><b>12</b></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div><small>TOTAL ANALYSES</small><strong>{{ total }}</strong><span>Saved locally</span></div>
+        <div><small>AVERAGE SCALABILITY</small><strong>{{ avg_scale }}%</strong><span>Across saved projects</span></div>
+        <div><small>PROJECT TYPES</small><strong>{{ types }}</strong><span>Supported categories</span></div>
+        <div><small>ENGINE STATUS</small><strong class="green">ONLINE</strong><span>Ready for analysis</span></div>
+    </section>
+
+    <section class="feature-strip">
+        <article><b>01</b><h3>Stack selection</h3><p>Frontend, backend, database and hosting recommendations.</p></article>
+        <article><b>02</b><h3>Architecture</h3><p>Architecture based on team size and project complexity.</p></article>
+        <article><b>03</b><h3>Security</h3><p>Project-specific security practices and controls.</p></article>
+        <article><b>04</b><h3>Roadmap</h3><p>From requirements through deployment and maintenance.</p></article>
+    </section>
+
+    <section id="analyze" class="analyze">
+        <div class="section-intro">
+            <span class="eyebrow">NEW ANALYSIS</span>
+            <h2>Describe your project.</h2>
+            <p>These inputs drive the recommendation engine.</p>
+        </div>
+
+        <form class="analysis-form" method="POST" action="/recommend">
+            <label class="full">Project name
+                <input name="project_name" placeholder="e.g. Smart Hospital Management" required>
+            </label>
+
+            <label>Project type
+                <select name="project_type" required>
+                    <option value="">Select type</option>
+                    <option>Portfolio</option>
+                    <option>Education</option>
+                    <option>Hospital</option>
+                    <option>Banking</option>
+                    <option>E-Commerce</option>
+                    <option>E-Sports</option>
+                </select>
+            </label>
+
+            <label>Team size
+                <input type="number" name="team_size" min="1" max="100" value="4" required>
+            </label>
+
+            <label class="full">Budget
+                <select name="budget" required>
+                    <option value="">Select budget</option>
+                    <option value="Low">Low — ₹1,000 to ₹5,000</option>
+                    <option value="Medium">Medium — ₹6,000 to ₹15,000</option>
+                    <option value="High">High — ₹16,000 to ₹50,000</option>
+                </select>
+            </label>
+
+            <button class="btn btn-dark full submit-btn" type="submit">Generate recommendation <span>→</span></button>
+        </form>
+    </section>
+
+    {% if recent %}
+    <section class="recent">
+        <div class="section-head">
+            <div><span class="eyebrow">RECENT</span><h2>Latest analyses</h2></div>
+            <a href="/history">See all →</a>
+        </div>
+        <div class="recent-grid">
+            {% for r in recent %}
+            <a class="recent-card" href="/details/{{ r['id'] }}">
+                <span class="type-pill">{{ r['project_type'] }}</span>
+                <h3>{{ r['project_name'] }}</h3>
+                <p>{{ r['frontend'] }} · {{ r['backend'] }}</p>
+                <footer><span>{{ r['complexity'] }}</span><b>{{ r['scalability'] }}%</b></footer>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</main>
+
+<footer class="footer"><b>TechManager</b><span>Flask · Python · SQLite</span><span>Academic PBL Project</span></footer>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
