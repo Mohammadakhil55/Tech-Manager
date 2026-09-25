@@ -486,6 +486,9 @@ def delete_record(record_id):
     conn.close()
     return redirect(url_for("history"))
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 @app.route("/api")
 def api_docs():
