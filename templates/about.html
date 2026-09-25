@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About TechManager and its explainable rule-based recommendation engine.">
+    <title>About — TechManager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="nav">
+    <a class="brand" href="/"><span class="brand-mark">TM</span><span><b>TechManager</b><small>PROJECT INTELLIGENCE</small></span></a>
+    <div class="nav-links"><a href="/">Dashboard</a><a href="/history">History</a><a class="active" href="/about">About</a></div>
+</nav>
+<main class="about">
+    <span class="eyebrow">PBL PROJECT · EXPLAINABLE DECISION SUPPORT</span>
+    <h1>A transparent way to structure technology-selection decisions.</h1>
+    <p class="lead">TechManager converts project requirements into a structured technology and delivery plan. The current engine is deterministic and rule-based: every output is derived from explicit project factors rather than a hidden model.</p>
+
+    <div class="about-grid">
+        <article><b>01</b><h2>Problem</h2><p>Choosing a suitable stack depends on project scope, team capacity, budget, security, scale and delivery constraints.</p></article>
+        <article><b>02</b><h2>Solution</h2><p>The engine maps these factors to a stack, architecture, scalability indicator, security checklist, team roles and roadmap.</p></article>
+        <article><b>03</b><h2>Engineering</h2><p>Python, Flask, Jinja templates, responsive CSS, JavaScript and SQLite, with a JSON API and database migrations.</p></article>
+        <article><b>04</b><h2>Responsible scope</h2><p>Scores are heuristic planning indicators, not accuracy claims. Production adoption would require expert validation and real project data.</p></article>
+    </div>
+
+    <div class="stack-line"><span>PYTHON</span><span>FLASK</span><span>SQLITE</span><span>REST API</span><span>JAVASCRIPT</span><span>HTML / CSS</span><span>GITHUB</span><span>RENDER</span></div>
+</main>
+<footer class="footer"><b>TechManager</b><span>Academic PBL Project</span><span><a href="/health">System health</a> · <a href="/api">API docs</a></span></footer>
+</body>
+</html>

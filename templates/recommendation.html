@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ record['project_name'] }} — TechManager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="nav">
+    <a class="brand" href="/"><span class="brand-mark">TM</span><span><b>TechManager</b><small>PROJECT INTELLIGENCE</small></span></a>
+    <div class="nav-links"><a href="/">Dashboard</a><a href="/history">History</a><a href="/about">About</a></div>
+</nav>
+
+<main class="report">
+    <div class="report-head">
+        <div><span class="eyebrow">ANALYSIS COMPLETE</span><h1>{{ record['project_name'] }}</h1><p>{{ record['project_type'] }} · Team of {{ record['team_size'] }} · {{ record['budget'] }} budget</p></div>
+        <button class="btn btn-light" onclick="window.print()">Print report</button>
+    </div>
+
+    <section class="factor-strip">
+        {% for label, value in factors.items() %}
+        <div><small>{{ label }}</small><strong>{{ value }}</strong></div>
+        {% endfor %}
+    </section>
+
+    <section class="metric-grid">
+        <div><small>COMPLEXITY</small><strong>{{ complexity }}</strong><span>Rule-derived planning level</span></div>
+        <div><small>SCALABILITY INDICATOR</small><strong>{{ scalability }}%</strong><div class="bar"><i style="width:{{ scalability }}%"></i></div></div>
+        <div><small>RULE-FIT SCORE</small><strong>{{ rule_fit_score }}%</strong><span>Heuristic coverage of selected factors</span></div>
+        <div><small>DELIVERY / COST</small><strong>{{ development_time }}</strong><span>{{ estimated_cost }} planning range</span></div>
+    </section>
+
+    <section class="report-section">
+        <div class="section-head"><div><span class="eyebrow">01 / RECOMMENDATION</span><h2>Recommended technology stack</h2></div></div>
+        <div class="stack-grid">
+            <article><small>FRONTEND</small><h3>{{ frontend }}</h3><p>Interface and client-side interactions.</p></article>
+            <article><small>BACKEND</small><h3>{{ backend }}</h3><p>Business logic, APIs and server-side processing.</p></article>
+            <article><small>DATABASE</small><h3>{{ database }}</h3><p>Persistent application data.</p></article>
+            <article><small>HOSTING</small><h3>{{ hosting }}</h3><p>Deployment and application availability.</p></article>
+        </div>
+    </section>
+
+    <section class="report-section dark-panel">
+        <div><span class="eyebrow">02 / ARCHITECTURE</span><h2>{{ architecture }}</h2><p>Architecture is selected primarily from team capacity, scale requirements and project constraints.</p></div>
+        <div class="architecture-flow"><span>Frontend</span><b>→</b><span>Backend / API</span><b>→</b><span>{{ database }}</span></div>
+    </section>
+
+    <section class="report-section">
+        <div class="explain">
+            <div class="explain-mark">WHY</div>
+            <div><span class="eyebrow">DECISION LOGIC</span><h3>Why this recommendation?</h3><p>{{ decision_summary }}</p>
+            <div class="reason-list">{% for reason in reason.split('. ') if reason %}<span>✓ {{ reason }}</span>{% endfor %}</div></div>
+        </div>
+    </section>
+
+    <section class="two-col report-section">
+        <article class="white-card"><span class="eyebrow">ALTERNATIVES</span><h2>Other technologies</h2><ul class="plain-list">{% for item in alternatives %}<li>{{ item }}</li>{% endfor %}</ul><p class="note">Alternatives are options for comparison, not ranked winners.</p></article>
+        <article class="white-card"><span class="eyebrow">TOOLS</span><h2>Recommended tools</h2><ul>{% for item in additional_tools %}<li>✓ {{ item }}</li>{% endfor %}</ul></article>
+    </section>
+
+    <section class="report-section">
+        <div class="section-head"><div><span class="eyebrow">03 / SECURITY</span><h2>Security checklist</h2></div></div>
+        <div class="security-grid">{% for item in security %}<div>✓ <span>{{ item }}</span></div>{% endfor %}</div>
+    </section>
+
+    <section class="report-section">
+        <div class="section-head"><div><span class="eyebrow">04 / TEAM</span><h2>Suggested team roles</h2></div></div>
+        <div class="role-grid">{% for role in roles %}<div><b>{{ "%02d"|format(loop.index) }}</b><span>{{ role }}</span></div>{% endfor %}</div>
+    </section>
+
+    <section class="report-section">
+        <div class="section-head"><div><span class="eyebrow">05 / ROADMAP</span><h2>Delivery plan</h2></div></div>
+        <div class="roadmap">{% for title, desc in roadmap %}<div><b>{{ "%02d"|format(loop.index) }}</b><span><strong>{{ title }}</strong><small>{{ desc }}</small></span></div>{% endfor %}</div>
+    </section>
+
+    <div class="report-actions"><a class="btn btn-light" href="/">← New analysis</a><a class="btn btn-dark" href="/history">View history →</a></div>
+</main>
+<footer class="footer"><b>TechManager</b><span>Generated {{ record['created_at'] }}</span><span>Prototype recommendation — validate with domain experts</span></footer>
+</body>
+</html>
