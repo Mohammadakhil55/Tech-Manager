@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare — TechManager</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head><body>
+<nav class="nav"><a class="brand" href="/"><span class="brand-mark">TM</span><span><b>TechManager</b><small>PROJECT INTELLIGENCE</small></span></a>
+<div class="nav-links"><a href="/">Dashboard</a><a class="active" href="/history">History</a><a href="/about">About</a></div></nav>
+<main class="history">
+<div class="page-head"><div><span class="eyebrow">DECISION LAB</span><h1>Compare recommendations</h1><p>See how different project constraints change the recommended technology plan.</p></div><a class="btn btn-dark" href="/">+ New analysis</a></div>
+<div class="compare-grid">
+{% for r in records %}
+<article class="compare-card"><span class="type-pill">{{ r['project_type'] }}</span><h2>{{ r['project_name'] }}</h2><p>Team {{ r['team_size'] }} · {{ r['budget'] }} budget · {{ r['created_at'] }}</p>
+<div class="compare-score"><strong>{{ recommendations[loop.index0]['rule_fit_score'] }}%</strong><span>rule fit</span><i style="width:{{ recommendations[loop.index0]['rule_fit_score'] }}%"></i></div></article>
+{% endfor %}
+</div>
+<section class="compare-table-wrap">
+<table class="compare-table"><thead><tr><th>Decision</th>{% for r in records %}<th>{{ r['project_name'] }}</th>{% endfor %}</tr></thead><tbody>
+{% for label,key in [('Frontend','frontend'),('Backend','backend'),('Database','database'),('Hosting','hosting'),('Architecture','architecture'),('Complexity','complexity'),('Scalability','scalability'),('Development time','development_time'),('Estimated cost','estimated_cost')] %}
+<tr><td>{{ label }}</td>{% for rec in recommendations %}<td>{{ rec[key] }}</td>{% endfor %}</tr>
+{% endfor %}
+</tbody></table></section>
+<div class="report-actions"><a class="btn btn-light" href="/history">← Back to history</a><a class="btn btn-dark" href="/">Run another analysis →</a></div>
+</main>
+<footer class="footer"><b>TechManager</b><span>v3.0 · Decision Lab</span><span>Academic PBL Project</span></footer>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body></html>

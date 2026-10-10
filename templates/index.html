@@ -53,6 +53,20 @@
         <article><b>04</b><h3>Delivery plan</h3><p>Team roles, roadmap, complexity and planning estimates.</p></article>
     </section>
 
+
+
+    <section class="demo-lab">
+        <div class="section-head">
+            <div><span class="eyebrow">PRESENTATION MODE</span><h2>Quick-start scenarios</h2></div>
+            <span class="demo-hint">Load a realistic profile in one click</span>
+        </div>
+        <div class="scenario-grid">
+            <button type="button" class="scenario-card" data-scenario="banking"><span class="scenario-icon">BF</span><span><b>Secure Banking</b><small>5 users · High budget · Critical security</small></span><strong>→</strong></button>
+            <button type="button" class="scenario-card" data-scenario="education"><span class="scenario-icon">ED</span><span><b>Learning Platform</b><small>4 users · Medium budget · High scale</small></span><strong>→</strong></button>
+            <button type="button" class="scenario-card" data-scenario="commerce"><span class="scenario-icon">EC</span><span><b>E-Commerce</b><small>8 users · High budget · 100K+ users</small></span><strong>→</strong></button>
+        </div>
+    </section>
+
     <section id="analyze" class="analyze">
         <div class="section-intro">
             <span class="eyebrow">NEW ANALYSIS</span>
@@ -137,7 +151,7 @@
     {% endif %}
 </main>
 
-<footer class="footer"><b>TechManager</b><span>Flask · Python · SQLite</span><span>Academic PBL Project</span></footer>
+<footer class="footer"><b>TechManager</b><span>v3.1 · Flask · Python · SQLite</span><span>Academic PBL Project</span></footer>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

@@ -30,26 +30,32 @@
     </form>
 
     {% if records %}
-    <div class="table-wrap">
+    <form method="GET" action="/compare" id="compare-form">
+        <div class="compare-bar">
+            <div><b>Compare recommendations</b><span>Select 2–3 saved projects to compare their stack decisions.</span></div>
+            <button class="btn btn-dark" type="submit">Compare selected →</button>
+        </div>
+        <div class="table-wrap">
         <table>
-            <thead><tr><th>PROJECT</th><th>TYPE</th><th>STACK</th><th>TEAM</th><th>SECURITY</th><th>COMPLEXITY</th><th>FIT</th><th>SCALE</th><th>DATE</th><th></th></tr></thead>
+            <thead><tr><th>COMPARE</th><th>PROJECT</th><th>TYPE</th><th>STACK</th><th>TEAM</th><th>SECURITY</th><th>COMPLEXITY</th><th>FIT</th><th>SCALE</th><th>DATE</th><th></th></tr></thead>
             <tbody>
             {% for r in records %}
             <tr>
-                <td><strong>{{ r['project_name'] }}</strong></td><td>{{ r['project_type'] }}</td>
+                <td><input class="compare-check" type="checkbox" name="ids" value="{{ r['id'] }}" aria-label="Select {{ r['project_name'] }}"></td><td><strong>{{ r['project_name'] }}</strong></td><td>{{ r['project_type'] }}</td>
                 <td><span class="muted-stack">{{ r['frontend'] }}</span></td><td>{{ r['team_size'] }}</td>
                 <td><span class="pill">{{ r['security_level'] }}</span></td><td><span class="pill">{{ r['complexity'] }}</span></td>
                 <td><b>{{ r['rule_fit_score'] }}%</b></td><td><b>{{ r['scalability'] }}%</b></td><td>{{ r['created_at'] }}</td>
-                <td class="actions"><a href="/details/{{ r['id'] }}">View</a><form method="POST" action="/delete/{{ r['id'] }}" onsubmit="return confirm('Delete this record?')"><button>Delete</button></form></td>
+                <td class="actions"><a href="/details/{{ r['id'] }}">View</a><button type="button" class="delete-record" data-id="{{ r['id'] }}">Delete</button></td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
-    </div>
+        </div>
+    </form>
     {% else %}
     <div class="empty"><h2>No matching analyses</h2><p>Generate a recommendation and it will appear here.</p><a class="btn btn-dark" href="/">Start analysis</a></div>
     {% endif %}
 </main>
 <footer class="footer"><b>TechManager</b><span>Flask · Python · SQLite</span><span>Decision-support prototype</span></footer>
-</body>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>\n</body>
 </html>

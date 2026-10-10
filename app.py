@@ -6,6 +6,7 @@ from datetime import datetime
 from pathlib import Path
 
 app = Flask(__name__)
+APP_VERSION = "3.1.0"
 BASE_DIR = Path(__file__).resolve().parent
 DATABASE = Path(os.environ.get("TECHMANAGER_DB", BASE_DIR / "database.db"))
 
@@ -44,6 +45,37 @@ def get_db():
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
+
+
+def row_to_recommendation(record):
+    """Rebuild a recommendation from a saved record for exports/API/compare views."""
+    return generate_recommendation(
+        record["project_type"], record["team_size"], record["budget"],
+        record["expected_users"], record["security_level"],
+        record["scalability_need"], record["team_experience"],
+        record["deadline"]
+    )
+
+
+def serialize_record(record):
+    rec = row_to_recommendation(record)
+    return {
+        "id": record["id"],
+        "project_name": record["project_name"],
+        "created_at": record["created_at"],
+        "inputs": rec["factors"],
+        "recommendation": {
+            "frontend": rec["frontend"], "backend": rec["backend"],
+            "database": rec["database"], "hosting": rec["hosting"],
+            "architecture": rec["architecture"], "complexity": rec["complexity"],
+            "scalability": rec["scalability"], "rule_fit_score": rec["rule_fit_score"],
+            "development_time": rec["development_time"], "estimated_cost": rec["estimated_cost"],
+            "security": rec["security"], "additional_tools": rec["additional_tools"],
+            "roles": rec["roles"], "roadmap": rec["roadmap"],
+            "alternatives": rec["alternatives"], "decision_summary": rec["decision_summary"],
+            "similar_projects": rec["similar_projects"]
+        }
+    }
 
 
 def init_db():
@@ -157,6 +189,43 @@ PROJECTS = {
         "security": ["Authentication", "API security", "Rate limiting", "HTTPS", "Input validation"],
         "complexity_bias": 3
     }
+}
+
+
+
+# Curated real-world references by project domain. These are learning/reference
+# links only; TechManager does not claim to analyze their private architecture.
+SIMILAR_PROJECTS = {
+    "E-Commerce": [
+        {"name": "Amazon", "url": "https://www.amazon.com/", "tag": "Global marketplace", "why": "Reference for product discovery, cart, checkout and large-scale commerce flows."},
+        {"name": "Flipkart", "url": "https://www.flipkart.com/", "tag": "Indian e-commerce", "why": "Reference for catalog, search, offers, payments and marketplace workflows."},
+        {"name": "Meesho", "url": "https://www.meesho.com/", "tag": "Social commerce", "why": "Reference for marketplace-style product discovery and seller-oriented commerce."},
+    ],
+    "Education": [
+        {"name": "EngiNotes", "url": "https://www.enginotes.in/", "tag": "Student platform", "why": "Reference for engineering notes, student content sharing and education-focused workflows."},
+        {"name": "Coursera", "url": "https://www.coursera.org/", "tag": "Online learning", "why": "Reference for courses, learning content, learner accounts and progress-oriented experiences."},
+        {"name": "Khan Academy", "url": "https://www.khanacademy.org/", "tag": "Learning platform", "why": "Reference for structured educational content and learner-focused experiences."},
+    ],
+    "Hospital": [
+        {"name": "Practo", "url": "https://www.practo.com/", "tag": "Healthcare platform", "why": "Reference for doctor discovery, appointments, consultations and patient-facing workflows."},
+        {"name": "Apollo Hospitals", "url": "https://www.apollohospitals.com/", "tag": "Hospital network", "why": "Reference for hospital services, appointments and digital healthcare journeys."},
+        {"name": "Tata 1mg", "url": "https://www.1mg.com/", "tag": "Digital health", "why": "Reference for medicine, diagnostics and healthcare service workflows."},
+    ],
+    "Banking": [
+        {"name": "HDFC Bank", "url": "https://www.hdfcbank.com/", "tag": "Digital banking", "why": "Reference for banking journeys, account services and secure customer interactions."},
+        {"name": "ICICI Bank", "url": "https://www.icicibank.com/", "tag": "Digital banking", "why": "Reference for online banking services and customer self-service workflows."},
+        {"name": "SBI", "url": "https://sbi.co.in/", "tag": "Banking", "why": "Reference for broad banking services and customer-facing digital workflows."},
+    ],
+    "E-Sports": [
+        {"name": "ESPN", "url": "https://www.espn.com/", "tag": "Sports platform", "why": "Reference for scores, schedules, team/player information and sports content."},
+        {"name": "Liquipedia", "url": "https://liquipedia.net/", "tag": "Esports wiki", "why": "Reference for tournaments, teams, players and structured esports data."},
+        {"name": "FIFA", "url": "https://www.fifa.com/", "tag": "Sports ecosystem", "why": "Reference for competitions, teams, players and sports information experiences."},
+    ],
+    "Portfolio": [
+        {"name": "GitHub Pages", "url": "https://pages.github.com/", "tag": "Static hosting", "why": "Reference for lightweight personal and project portfolio deployment."},
+        {"name": "Vercel", "url": "https://vercel.com/", "tag": "Web platform", "why": "Reference for modern frontend and portfolio deployment workflows."},
+        {"name": "Behance", "url": "https://www.behance.net/", "tag": "Creative portfolio", "why": "Reference for presenting projects, work samples and professional profiles."},
+    ],
 }
 
 CHOICES = {
@@ -343,6 +412,7 @@ def generate_recommendation(project_type, team_size, budget,
         "development_time": development_time,
         "estimated_cost": costs[budget],
         "additional_tools": tools,
+        "similar_projects": SIMILAR_PROJECTS.get(project_type, []),
         "roles": roles,
         "roadmap": roadmap,
         "security": security,
@@ -362,7 +432,7 @@ def home():
     types = conn.execute("SELECT COUNT(DISTINCT project_type) AS n FROM recommendations").fetchone()["n"]
     recent = conn.execute("SELECT * FROM recommendations ORDER BY id DESC LIMIT 5").fetchall()
     conn.close()
-    return render_template("index.html", total=total, avg_scale=avg_scale, types=types)
+    return render_template("index.html", total=total, avg_scale=avg_scale, types=types, recent=recent)
 
 
 @app.route("/recommend", methods=["POST"])
@@ -486,15 +556,49 @@ def delete_record(record_id):
     conn.close()
     return redirect(url_for("history"))
 
-@app.route("/about")
-def about():
-    return render_template("about.html")
+
+@app.route("/export/<int:record_id>.json")
+def export_json(record_id):
+    conn = get_db()
+    record = conn.execute("SELECT * FROM recommendations WHERE id = ?", (record_id,)).fetchone()
+    conn.close()
+    if record is None:
+        return jsonify({"error": "Recommendation not found"}), 404
+    response = jsonify(serialize_record(record))
+    response.headers["Content-Disposition"] = f'attachment; filename="techmanager-{record_id}.json"'
+    return response
+
+
+@app.route("/compare")
+def compare():
+    raw_values = request.args.getlist("ids")
+    ids = []
+    for raw_ids in raw_values:
+        for value in raw_ids.split(","):
+            try:
+                number = int(value)
+                if number > 0 and number not in ids:
+                    ids.append(number)
+            except ValueError:
+                pass
+    ids = ids[:3]
+    if len(ids) < 2:
+        return redirect(url_for("history"))
+    placeholders = ",".join("?" for _ in ids)
+    conn = get_db()
+    rows = conn.execute(f"SELECT * FROM recommendations WHERE id IN ({placeholders}) ORDER BY id DESC", ids).fetchall()
+    conn.close()
+    records = [dict(r) for r in rows]
+    if len(records) < 2:
+        return redirect(url_for("history"))
+    return render_template("compare.html", records=records, recommendations=[row_to_recommendation(r) for r in rows])
+
 
 @app.route("/api")
 def api_docs():
     return jsonify({
         "service": "TechManager API",
-        "version": "2.0",
+        "version": APP_VERSION,
         "endpoint": "POST /api/recommend",
         "required": ["project_type", "team_size", "budget"],
         "optional": ["expected_users", "security_level", "scalability_need", "team_experience", "deadline"],

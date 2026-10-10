@@ -1,10 +1,21 @@
-# TechManager — A Tech Stack Recommendation System for Software Projects
+# TechManager 3.0 — A Tech Stack Recommendation System for Software Projects
 
-TechManager is an **explainable, rule-based decision-support web application** for early-stage software project planning.
+TechManager 3.0 is an **explainable, rule-based decision-support web application** for early-stage software project planning.
 
 It converts project requirements into a structured recommendation covering the technology stack, architecture, security controls, team roles and delivery roadmap.
 
 > **Scope note:** TechManager is a PBL prototype. Its scores and recommendations are deterministic heuristics defined in the rule base; they are not statistical accuracy measurements and do not guarantee the universally optimal technology choice.
+
+
+## v3.0 presentation-ready features
+
+- Quick-start demo scenarios for Banking, Education and E-Commerce
+- Recommendation comparison for 2–3 saved projects
+- JSON export for every recommendation
+- Dedicated comparison/decision-lab view
+- Improved report toolbar for printing and export
+- Responsive presentation-focused UI
+- Existing recommendation history, search, filters, security checklist and roadmap retained
 
 ## What it considers
 
@@ -176,3 +187,8 @@ SQLite is appropriate for the PBL prototype and simple deployments. For a produc
 6. Data-driven/hybrid recommendation models
 7. Continuous technology metadata updates
 8. CI/CD and production observability
+
+
+## v3.1 feature: Similar Projects & Industry References
+
+Each recommendation now includes curated public reference projects for the selected domain. For example, E-Commerce recommendations surface Amazon, Flipkart and Meesho; Education surfaces EngiNotes, Coursera and Khan Academy. These are learning/reference links only and are not presented as evidence of private architecture, performance, or technology choices.

@@ -33,3 +33,42 @@ main{max-width:1200px;margin:auto;padding:0 28px}.hero{padding:88px 0 70px;displ
 @media(max-width:1100px){.factor-strip{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:650px){.factor-strip{grid-template-columns:1fr 1fr}.reason-list{grid-template-columns:1fr}}
 @media print{.factor-strip{grid-template-columns:repeat(4,1fr)}}
+
+
+/* TechManager 3.0 — presentation and decision-lab UI */
+.demo-lab{margin:0 0 72px}
+.demo-hint{font-size:11px;color:#94a3b8}
+.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.scenario-card{display:flex;align-items:center;gap:13px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;cursor:pointer;transition:.18s;font-family:"DM Sans"}
+.scenario-card:hover{transform:translateY(-3px);border-color:#b8cdf5;box-shadow:0 15px 35px rgba(15,23,42,.07)}
+.scenario-card>span:nth-child(2){flex:1}.scenario-card b{display:block;font:700 13px "Space Grotesk";color:var(--ink)}.scenario-card small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+.scenario-card>strong{color:var(--blue);font-size:16px}.scenario-icon{width:36px;height:36px;border-radius:10px;background:#101827;color:#fff;display:grid;place-items:center;font:700 9px "Space Grotesk"}
+.report-toolbar{display:flex;gap:8px;align-items:center}
+.compare-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;background:#101827;color:#fff;border-radius:15px;padding:18px 20px;margin-bottom:12px}
+.compare-bar b{display:block;font:700 15px "Space Grotesk"}.compare-bar span{display:block;color:#9aa7ba;font-size:10px;margin-top:3px}
+.compare-check{width:16px;height:16px;accent-color:var(--blue);cursor:pointer}
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+.compare-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:22px}
+.compare-card h2{font-size:19px;margin:13px 0 4px}.compare-card p{font-size:10px;color:var(--muted)}
+.compare-score{position:relative;margin-top:20px;padding-top:12px;border-top:1px solid #eef1f5}.compare-score strong{font:700 25px "Space Grotesk"}.compare-score span{font-size:10px;color:#8491a5;margin-left:5px}.compare-score i{display:block;height:5px;background:var(--blue);border-radius:8px;margin-top:8px}
+.compare-table-wrap{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:auto;margin-bottom:35px}
+.compare-table{width:100%;border-collapse:collapse;min-width:700px}.compare-table th{text-align:left;background:#f8fafc;color:#8491a5;font-size:9px;letter-spacing:.1em;padding:15px}.compare-table td{border-top:1px solid #edf0f4;padding:15px;font-size:11px}.compare-table td:first-child{font-weight:700;color:#475569;width:170px}
+.spinner{display:inline-block;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.scenario-grid,.compare-grid{grid-template-columns:1fr}.compare-bar{align-items:flex-start;flex-direction:column}}
+@media(max-width:650px){.report-toolbar{flex-wrap:wrap}.compare-bar .btn{width:100%}}
+@media print{.report-toolbar{display:none!important}}
+
+/* Similar Projects & Industry References */
+.reference-section { background: #f7f8fa; border: 1px solid #e7e9ed; border-radius: 24px; padding: 34px; }
+.reference-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
+.reference-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 22px; min-height: 220px; display:flex; flex-direction:column; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.reference-card:hover { transform: translateY(-3px); box-shadow: 0 14px 35px rgba(20,25,35,.09); border-color: #cfd4dc; }
+.reference-top { display:flex; justify-content:space-between; align-items:center; margin-bottom: 18px; }
+.reference-badge { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; background:#eef2f7; color:#394150; border-radius:999px; padding:7px 10px; }
+.reference-index { font-size: 12px; font-weight:700; color:#9aa1ad; }
+.reference-card h3 { margin:0 0 10px; font-size:22px; letter-spacing:-.02em; }
+.reference-card p { color:#666d78; line-height:1.6; margin:0 0 18px; font-size:14px; flex:1; }
+.reference-link { color:#111827; font-weight:700; text-decoration:none; border-top:1px solid #eceef2; padding-top:14px; }
+.reference-link:hover { text-decoration:underline; }
+@media (max-width: 900px) { .reference-grid { grid-template-columns: 1fr; } .reference-section { padding: 24px; } }
+@media print { .reference-link { color:#111; } }
