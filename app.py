@@ -434,6 +434,9 @@ def home():
     conn.close()
     return render_template("index.html", total=total, avg_scale=avg_scale, types=types, recent=recent)
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 @app.route("/recommend", methods=["POST"])
 def recommend():
